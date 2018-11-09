@@ -1,0 +1,22 @@
+{
+  "name": "managementserver",
+  "version": "1.0.0",
+  "description": "The core management server of the Alcoholic Chicken company.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheAlcoholicChicken/ManagementServer.git"
+  },
+  "author": "Jake Choi the Project (Team)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheAlcoholicChicken/ManagementServer/issues"
+  },
+  "homepage": "https://github.com/TheAlcoholicChicken/ManagementServer#readme",
+  "dependencies": {
+    "nodemon": "^1.18.6"
+  }
+}
