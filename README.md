@@ -32,6 +32,8 @@ $ nodemon server.js
 2. Develop, deploy to the local server, and finish testing.
 3. Initiate a pull request (Include **the project manager** as a reviewer).
 
+**NOTE: The merged branch will be deleted automatically, if you don't want this, please back it up.**
+
 ### Deployment
 
 something
