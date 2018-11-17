@@ -1,0 +1,1 @@
+/* follow the structure used in the TankGame for initing routes with DB. DO NOT add middlewares here though */
