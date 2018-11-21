@@ -1,19 +1,17 @@
 const mongoose = require('mongoose');
 
-let User = new mongoose.Schema({
-  user_id: String, // computed when user signs up
-  connected_external_apps: [app_ids],
-  credentials: {
-    email: String,
-    password: String // will be hashed
-  }
+let ExternalApp = new mongoose.Schema({
+  app_name: String,
+  app_url: String,
+  app_icon: String, // url to image
+  token: String, // unique token used to make requests for the external app
 });
 
 /**
  * Export functions for the outside use.
  */
 module.exports = {
-    User: mongoose.model('user', User),
+    ExternalApp: mongoose.model('externalApp', ExternalApp),
     connect: callback => {
         mongoose.connection
             .once('open', () => {
