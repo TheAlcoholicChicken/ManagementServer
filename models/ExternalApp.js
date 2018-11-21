@@ -10,16 +10,4 @@ let ExternalApp = new mongoose.Schema({
 /**
  * Export functions for the outside use.
  */
-module.exports = {
-    ExternalApp: mongoose.model('externalApp', ExternalApp),
-    connect: callback => {
-        mongoose.connection
-            .once('open', () => {
-                console.log('Connected successfully to MongoDB server!');
-                callback();
-            })
-            .on('error', error => {
-                console.log('Connection error:', error);
-            });
-    }
-};
+module.exports =  mongoose.model('externalApp', ExternalApp);

@@ -12,16 +12,4 @@ let User = new mongoose.Schema({
 /**
  * Export functions for the outside use.
  */
-module.exports = {
-    User: mongoose.model('user', User),
-    connect: callback => {
-        mongoose.connection
-            .once('open', () => {
-                console.log('Connected successfully to MongoDB server!');
-                callback();
-            })
-            .on('error', error => {
-                console.log('Connection error:', error);
-            });
-    }
-};
+module.exports = mongoose.model('user', User);
