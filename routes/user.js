@@ -35,16 +35,21 @@ module.exports = (app, db) => {
                             password // will need to be hashed
                             
                         },
-                        (err, User) => {
+                        (err, user) => {
                             if (err) {
                                 errors.handle(err);
                                 res.status(400).json({ msg: err });
                             }
 
                             if (User) {
-                                res.status(400).json({
-                                    msg: 'Great Success!'
-                                });
+                                res.status(400).json(
+                                    {
+                                        msg:
+                                            'Great Success!',
+                                        user_id:
+                                            user._id
+                                    }
+                                );
                             }
                         }
                     );
@@ -73,10 +78,11 @@ module.exports = (app, db) => {
 
                 console.log(user);
                 if (user != null) {
-                    res.status(200).json({ msg: 'Login successful.' });
+                    res.status(200).json({ msg: 'Login successful.', user_id: user._id });
                 } else {
                     res.status(400).json({
                         msg: 'Login unsuccessful.'
+                        
                     });
                 }
             }
