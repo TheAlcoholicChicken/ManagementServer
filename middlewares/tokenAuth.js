@@ -12,7 +12,7 @@ let authToken = (req, res, next) => {
         if(authToken){
             next();
         } else {
-            res.status(400).json({msg:"Token is not in DB."});
+            res.status(400).json({msg:"Token is not valid"});
         }
     })
 }
@@ -20,7 +20,6 @@ let authToken = (req, res, next) => {
 
 
 module.exports = db => {
-    console.log('authToken');
     this.db = db
     return authToken.bind(this);
 };
