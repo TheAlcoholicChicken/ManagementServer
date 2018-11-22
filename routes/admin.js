@@ -34,7 +34,8 @@ module.exports = (app, db) => {
                             if (err) return error.handle(err);
 
                             res.status(200).json({
-                                msg: 'Great Success!'
+                                msg: 'Great Success!',
+                                token
                             });
                         });
                     }
