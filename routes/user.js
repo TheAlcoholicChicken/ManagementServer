@@ -103,78 +103,56 @@ module.exports = (app, db) => {
                 let get_badges = [];
                 if (connected_external_apps.length == 0) {
                     {
-                        res.status(
-                            200
-                        ).json(
-                            []
-                        );
+                        res.status(200).json([]);
                     }
-                } 
-                
-                for (let app_id in connected_external_apps) {
-                        // console.log(app_id);
+                }
 
-                        ExternalApp.findById(
-                            connected_external_apps[app_id],
-                            (err, app) => {
-                                if (app) {
-                                    request(
-                                        {
-                                            uri:
-                                                app.app_url +
-                                                'user/get_badge_message',
-                                            method: 'POST',
-                                            json: {
-                                                user_id:
-                                                    user._id,
-                                                token:
-                                                    app.auth_token
-                                            }
-                                        },
-                                        function(
-                                            error,
-                                            response,
-                                            body
+                for (let app_id in connected_external_apps) {
+                    // console.log(app_id);
+
+                    ExternalApp.findById(
+                        connected_external_apps[app_id],
+                        (err, app) => {
+                            if (app) {
+                                request(
+                                    {
+                                        uri:
+                                            app.app_url +
+                                            'user/get_badge_message',
+                                        method: 'POST',
+                                        json: {
+                                            user_id: user._id,
+                                            token: app.auth_token
+                                        }
+                                    },
+                                    function(error, response, body) {
+                                        if (
+                                            !error &&
+                                            response.statusCode == 200
                                         ) {
+                                            console.log(body);
+                                            get_badges.push({
+                                                user_id: body.userid,
+                                                app_name: app.app_name,
+                                                app_url: app.app_url,
+                                                app_icon: app.app_icon, // url to image
+                                                badge_text: body.msg
+                                            });
                                             if (
-                                                !error &&
-                                                response.statusCode ==
-                                                    200
+                                                get_badges.length ===
+                                                connected_external_apps.length
                                             ) {
-                                                console.log(
-                                                    body
+                                                res.status(200).json(
+                                                    get_badges
                                                 );
-                                                get_badges.push(
-                                                    {
-                                                        user_id:
-                                                            body.userid,
-                                                        app_name:
-                                                            app.app_name,
-                                                        app_url:
-                                                            app.app_url,
-                                                        app_icon:
-                                                            app.app_icon, // url to image
-                                                        badge_text:
-                                                            body.msg
-                                                    }
-                                                );
-                                                if (
-                                                    get_badges.length ===
-                                                    connected_external_apps.length
-                                                ) {
-                                                    res.status(
-                                                        200
-                                                    ).json(
-                                                        get_badges
-                                                    );
-                                                }
                                             }
                                         }
-                                    );
-                                }
+                                    }
+                                );
                             }
-                        );
-                    }
+                        }
+                    );
+                }
                 // res.status(200).json({
                 //     msg: 'fgdhjk.'
                 // });
