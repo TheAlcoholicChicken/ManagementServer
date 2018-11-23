@@ -88,80 +88,84 @@ module.exports = (app, db) => {
     router.post('/get_badges', authToken, (req, res) => {
         // perform request
         let user_id = req.body.user_id;
-
-        User.findById(user_id, (err, user) => {
-            if (err) {
-                errors.handle(err);
-                res.status(400).json({ msg: err });
-            }
-            console.log(user);
-            if (user != null) {
-                console.log(user);
-
-                let connected_external_apps = user.connected_external_apps;
-
-                let get_badges = [];
-                if (connected_external_apps.length == 0) {
-                    {
-                        res.status(200).json([]);
-                    }
+        if (!user_id.match(/^[0-9a-fA-F]{24}$/)) {
+            res.status(400).json({ msg: 'not a valid ID' });
+        } else {
+            User.findById(user_id, (err, user) => {
+                if (err) {
+                    errors.handle(err);
+                    res.status(400).json({ msg: err });
                 }
 
-                for (let app_id in connected_external_apps) {
-                    // console.log(app_id);
+                console.log(user);
+                if (user != null) {
+                    console.log(user);
 
-                    ExternalApp.findById(
-                        connected_external_apps[app_id],
-                        (err, app) => {
-                            if (app) {
-                                request(
-                                    {
-                                        uri:
-                                            app.app_url +
-                                            'user/get_badge_message',
-                                        method: 'POST',
-                                        json: {
-                                            user_id: user._id,
-                                            token: app.auth_token
-                                        }
-                                    },
-                                    function(error, response, body) {
-                                        if (
-                                            !error &&
-                                            response.statusCode == 200
-                                        ) {
-                                            console.log(body);
-                                            get_badges.push({
-                                                user_id: body.userid,
-                                                app_name: app.app_name,
-                                                app_url: app.app_url,
-                                                app_icon: app.app_icon, // url to image
-                                                badge_text: body.msg
-                                            });
+                    let connected_external_apps = user.connected_external_apps;
+
+                    let get_badges = [];
+                    if (connected_external_apps.length == 0) {
+                        {
+                            res.status(200).json([]);
+                        }
+                    }
+
+                    for (let app_id in connected_external_apps) {
+                        // console.log(app_id);
+
+                        ExternalApp.findById(
+                            connected_external_apps[app_id],
+                            (err, app) => {
+                                if (app) {
+                                    request(
+                                        {
+                                            uri:
+                                                app.app_url +
+                                                'user/get_badge_message',
+                                            method: 'POST',
+                                            json: {
+                                                user_id: user._id,
+                                                token: app.auth_token
+                                            }
+                                        },
+                                        function(error, response, body) {
                                             if (
-                                                get_badges.length ===
-                                                connected_external_apps.length
+                                                !error &&
+                                                response.statusCode == 200
                                             ) {
-                                                res.status(200).json(
-                                                    get_badges
-                                                );
+                                                console.log(body);
+                                                get_badges.push({
+                                                    user_id: body.userid,
+                                                    app_name: app.app_name,
+                                                    app_url: app.app_url,
+                                                    app_icon: app.app_icon, // url to image
+                                                    badge_text: body.msg
+                                                });
+                                                if (
+                                                    get_badges.length ===
+                                                    connected_external_apps.length
+                                                ) {
+                                                    res.status(200).json(
+                                                        get_badges
+                                                    );
+                                                }
                                             }
                                         }
-                                    }
-                                );
+                                    );
+                                }
                             }
-                        }
-                    );
+                        );
+                    }
+                    // res.status(200).json({
+                    //     msg: 'fgdhjk.'
+                    // });
+                } else {
+                    res.status(400).json({
+                        msg: 'No user found.'
+                    });
                 }
-                // res.status(200).json({
-                //     msg: 'fgdhjk.'
-                // });
-            } else {
-                res.status(400).json({
-                    msg: 'No user found.'
-                });
-            }
-        });
+            });
+        }
     });
 
     app.use('/user', router);
