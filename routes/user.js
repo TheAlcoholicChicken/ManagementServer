@@ -10,7 +10,7 @@ for req and response structures.
 
 module.exports = (app, db) => {
     const authToken = require('../middlewares/tokenAuth')(db);
-    const authTokenList = require('../models/AuthorizedToken');
+    const connectToExternalApp = require('../middlewares/connectToExternalApp')(db);
     const User = require('../models/User');
     const ExternalApp = require('../models/ExternalApp');
     //const user_db = require('../models/User');
@@ -57,7 +57,7 @@ module.exports = (app, db) => {
     });
 
     /* Don't worry about hashing passwords for now.*/
-    router.post('/login', authToken, (req, res) => {
+    router.post('/login', authToken, connectToExternalApp, (req, res) => {
         // perform request
         let email = req.body.user_email;
         let password = req.body.password;
