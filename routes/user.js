@@ -158,7 +158,7 @@ module.exports = (app, db) => {
                                                 connected_external_apps.length
                                             ) {
                                                 res.status(200).json(
-                                                    get_badges
+                                                    {badges: get_badges}
                                                 );
                                             }
                                         }
