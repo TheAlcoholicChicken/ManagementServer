@@ -141,7 +141,7 @@ module.exports = (app, db) => {
                                                     app_name: app.app_name,
                                                     app_url: app.app_url,
                                                     app_icon: app.app_icon, // url to image
-                                                    badge_text: body.msg
+                                                    badge_text: body.badge_text
                                                 });
                                             } else {
                                                 get_badges.push({
