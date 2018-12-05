@@ -43,7 +43,7 @@ module.exports = (app, db) => {
                         }
 
                         if (User) {
-                            res.status(400).json({
+                            res.status(200).json({
                                 msg: 'Great Success!',
                                 user_id: user._id
                             });
