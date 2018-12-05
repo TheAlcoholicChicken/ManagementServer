@@ -10,7 +10,9 @@ for req and response structures.
 
 module.exports = (app, db) => {
     const authToken = require('../middlewares/tokenAuth')(db);
-    const connectToExternalApp = require('../middlewares/connectToExternalApp')(db);
+    const connectToExternalApp = require('../middlewares/connectToExternalApp')(
+        db
+    );
     const User = require('../models/User');
     const ExternalApp = require('../models/ExternalApp');
     //const user_db = require('../models/User');
@@ -141,14 +143,31 @@ module.exports = (app, db) => {
                                                     app_icon: app.app_icon, // url to image
                                                     badge_text: body.msg
                                                 });
-                                                if (
-                                                    get_badges.length ===
-                                                    connected_external_apps.length
-                                                ) {
-                                                    res.status(200).json(
-                                                        get_badges
-                                                    );
-                                                }
+                                              
+                                            } else {
+                                                get_badges.push(
+                                                    {
+                                                        user_id:
+                                                            body.userid,
+                                                        app_name:
+                                                            app.app_name,
+                                                        app_url:
+                                                            app.app_url,
+                                                        app_icon:
+                                                            app.app_icon, // url to image
+                                                        badge_text:
+                                                            null
+                                                    }
+                                                );
+                                            }
+
+                                            if (
+                                                get_badges.length ===
+                                                connected_external_apps.length
+                                            ) {
+                                                res.status(200).json(
+                                                    get_badges
+                                                );
                                             }
                                         }
                                     );
