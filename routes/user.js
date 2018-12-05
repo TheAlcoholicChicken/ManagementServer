@@ -143,22 +143,14 @@ module.exports = (app, db) => {
                                                     app_icon: app.app_icon, // url to image
                                                     badge_text: body.msg
                                                 });
-                                              
                                             } else {
-                                                get_badges.push(
-                                                    {
-                                                        user_id:
-                                                            body.userid,
-                                                        app_name:
-                                                            app.app_name,
-                                                        app_url:
-                                                            app.app_url,
-                                                        app_icon:
-                                                            app.app_icon, // url to image
-                                                        badge_text:
-                                                            null
-                                                    }
-                                                );
+                                                get_badges.push({
+                                                    user_id: body.userid,
+                                                    app_name: app.app_name,
+                                                    app_url: app.app_url,
+                                                    app_icon: app.app_icon, // url to image
+                                                    badge_text: null
+                                                });
                                             }
 
                                             if (
